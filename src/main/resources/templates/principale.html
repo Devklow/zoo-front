@@ -1,6 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<html lang="fr">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
     <head>
 		<link rel="icon" type="image/png" href="images/logo.png" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -40,42 +38,32 @@
 	<img alt="mon zoo" src="images/zooparc3.jpg" width="100%" height="100%"/>
 	<form name="fzoo" action="devorer" method="post">
 		<input type="hidden" value="devorer" name="action"/>
-		<c:forEach items="${cages}" var="cage">
-			<div style="position:absolute;top:${cage.getY()}px;left:${cage.getX()}px">
-				<img data-id="${cage.getId()}" src="${cage.getImage()}" class="animal"/>
-				<div id="pancarte-${cage.getId()}" class="afficheAnimal d-none" >${cage.getPancarte()}<br/>
-                    <c:if test = "${cage.isVide() == true}">
-						<a class="btn btn-sm btn-info btn-sml ms-1 me-1 addAnimal" data-bs-toggle="modal"
-						   data-bs-target="#ajouterAnimal" type="button" data-id="${cage.getId()}">Ajouter un animal</a>
-                    </c:if>
-                    <c:if test = "${cage.isVide() == false}">
-                        <input type="radio" name="mangeur" value="${cage.getId()}"> Mangeur &nbsp;&nbsp;
-                        <input type="radio" name="mange" value="${cage.getId()}"> Mange<br>
-                    </c:if>
+			<div th:each="cage: ${cages}" th:style="'position:absolute;top:'+${cage.y()}+'px;left:'+${cage.x()}+'px'">
+				<img th:data-id="${cage.id()}" th:src="${cage.image()}" class="animal"/>
+				<div th:id="'pancarte-'+${cage.id()}" class="afficheAnimal d-none" ><span th:text="${cage.pancarte()}"></span><br/>
+					<a th:if="${cage.Vide() == true}" class="btn btn-sm btn-info btn-sml ms-1 me-1 addAnimal" data-bs-toggle="modal"
+						   data-bs-target="#ajouterAnimal" type="button" th:data-id="${cage.id()}">Ajouter un animal</a>
+					<div th:if="${cage.Vide() == false}">
+						<input type="radio" name="mangeur" th:value="${cage.id()}"> Mangeur &nbsp;&nbsp;
+						<input type="radio" name="mange" th:value="${cage.id()}"> Mange<br>
+					</div>
 				</div>
 			</div>
-		</c:forEach>
 		<div id="visiteurs" class="position-fixed bottom-0 start-0 mb-4">
-            <c:forEach begin="1" end="${visiteurs}">
-				<img class="visiteur" src="images/visiteur.png"/>
-			</c:forEach>
-            <c:if test="${visiteurs>0}">
-                <input id="visiteurRadio" type="radio" name="mange" value="visiteur">
-                <label for="visiteurRadio" class="text-white">
+				<img th:each="i: ${#numbers.sequence(0, visiteurs - 1)}" class="visiteur" src="images/visiteur.png"/>
+                <input th:if="${visiteurs>0}" id="visiteurRadio" type="radio" name="mange" value="visiteur">
+                <label th:if="${visiteurs>0}" for="visiteurRadio" class="text-white">
                     Mange
                 </label>
-            </c:if>
         </div>
 	</form>
 </article>
-        <c:forEach items="${notifs}" var="notif">
-            <div id="info-bulle-container" class="info-bulle-top-right">
-                <div class="info-bulle info-bulle-${notif.getType()}" aria-live="polite" style="">
-                    <div class="info-bulle-message">${notif.getMessage()}
+            <div th:if="${notif != null}" id="info-bulle-container" class="info-bulle-top-right">
+                <div th:class="'info-bulle info-bulle-'+${notif.type()}" aria-live="polite" style="">
+                    <div class="info-bulle-message" th:text="${notif.message()}">
                     </div>
                 </div>
             </div>
-        </c:forEach>
 <script src="info-bulle.js" defer></script>
 <script src="coord.js" defer></script>
 <script src="principale.js" defer></script>
@@ -132,9 +120,7 @@
 					<label for="addAnimalClasse" class="form-label">Type de l'animal :</label>
 					<input type="hidden" name="addAnimalCageId" value="X" id="addAnimalCageId">
 						<select id="addAnimalClasse" name="addAnimalClasse" class="form-select" aria-label="types animal">
-							<c:forEach items="${classes}" var="classe">
-								<option value="${classe}">${classe}</option>
-							</c:forEach>
+								<option th:each="classe: ${classes}" th:value="${classe}" th:text="${classe}"></option>
 						</select>
                     <label for="addAnimalName" class="form-label">Nom :</label>
                     <input type="text" class="form-control" name="addAnimalName" id="addAnimalName">
