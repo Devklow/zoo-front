@@ -50,7 +50,7 @@
 				</div>
 			</div>
 		<div id="visiteurs" class="position-fixed bottom-0 start-0 mb-4">
-				<img th:each="i: ${#numbers.sequence(0, visiteurs - 1)}" class="visiteur" src="images/visiteur.png"/>
+				<img th:if="${visiteurs>0}" th:each="i: ${#numbers.sequence(1, visiteurs)}" class="visiteur" src="images/visiteur.png"/>
                 <input th:if="${visiteurs>0}" id="visiteurRadio" type="radio" name="mange" value="visiteur">
                 <label th:if="${visiteurs>0}" for="visiteurRadio" class="text-white">
                     Mange
@@ -79,7 +79,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
 			</div>
 			<div class="modal-body">
-				<form name="ajouterCageForm" id="ajouterCageForm" action="ajouterCage">
+				<form name="ajouterCageForm" method="POST" id="ajouterCageForm" action="ajouterCage">
 					<div class="col-auto mb-3 fw-bold">
 						Coordonnées :
 					</div>
@@ -116,7 +116,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
 			</div>
 			<div class="modal-body">
-				<form name="ajouterAnimalForm" id="ajouterAnimalForm" action="ajouterAnimal">
+				<form name="ajouterAnimalForm" id="ajouterAnimalForm" method="POST" action="entrerAnimal">
 					<label for="addAnimalClasse" class="form-label">Type de l'animal :</label>
 					<input type="hidden" name="addAnimalCageId" value="X" id="addAnimalCageId">
 						<select id="addAnimalClasse" name="addAnimalClasse" class="form-select" aria-label="types animal">
