@@ -22,26 +22,6 @@ build:
     - 'mvn $MAVEN_CLI_OPTS clean'
     - 'mvn $MAVEN_CLI_OPTS compile'
 
-bdd:
-  stage: bdd
-  image: k8.adms.dil.univ-mrs.fr/labbe/zoo.mysql
-  script:
-    - 'echo base chargée'
-
-testing:
-  stage: test
-  script:
-    - 'mvn $MAVEN_CLI_OPTS test'
-
-quality:
-  stage: quality
-  script:
-    - 'mvn $MAVEN_CLI_OPTS jacoco:report'
-    - 'mvn $MAVEN_CLI_OPTS verify'
-    - 'mvn $MAVEN_CLI_OPTS sonar:sonar'
-
-  allow_failure: false
-
 deployment:
   stage: deployment
   script:
