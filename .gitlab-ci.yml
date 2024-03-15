@@ -1,7 +1,7 @@
 variables:
   MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
   MAVEN_CLI_OPTS: "--batch-mode -s settings.xml --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true -Dsonar.coverage.jacoco.xmlReportPaths=report1.xml,report2.xml"
-  MAVEN_SKIP_TEST: "-s settings.xml -Dmaven.test.skip=true -DoutputDirectory=./target/"
+  MAVEN_SKIP_TEST: "-s settings.xml -Dmaven.test.skip=true"
   DOCKER_AUTH_CONFIG: ${env.DOCKER_AUTH_CONFIG}
 
 # Maven avec JDK 20
