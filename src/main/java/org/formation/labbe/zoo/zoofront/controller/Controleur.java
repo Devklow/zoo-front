@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import org.formation.labbe.zoo.dto.*;
+import org.formation.labbe.zoo.zoofront.bus.Runner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,8 @@ public class Controleur {
     @Autowired
     private Environment env;
 
+    @Autowired
+    private Runner runner;
     private WebClient client;
 
     @PostConstruct
@@ -42,6 +45,7 @@ public class Controleur {
 
     @RequestMapping("/")
     public ModelAndView index(){
+        runner.Send("Toto s'est connecté");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("principale");
         CageInfos[] cagesInfos = client.get()
