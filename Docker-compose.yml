@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  db:
+    image: k8.adms.dil.univ-mrs.fr/labbe/zoo.mysql
+    container_name: db
+    restart: on-failure
+    ports:
+      - 3306:3306
+
+  back:
+    image: zoo.backend
+    container_name: zoo-backend
+    restart: on-failure
+    ports:
+      - 81:81
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/zoo
+    links:
+      - db
+    depends_on:
+      db:
+        condition: service_started
+
+  front:
+    image: zoo.frontend
+    container_name: zoo-frontend
+    restart: on-failure
+    ports:
+      - 80:82
+    environment:
+      URL_BACKEND: zoo-backend
+      PORT_BACKEND: 81
+    links:
+      - back
+    depends_on:
+      back:
+        condition: service_started
